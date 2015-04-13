@@ -1,0 +1,47 @@
+
+@mineColor: #eee;
+@msgColor: #6CE86E;
+
+.chat-area {
+  padding: 20px;
+  overflow: auto;
+
+  .entry {
+    margin: 6px 0;
+
+    & > div { // .message or .info
+      display: inline-block;
+      padding:4px 6px;
+
+      &.info {
+        background: orange;
+        color: white;
+      }
+
+      &.message {
+        background: @msgColor;
+        color:white;
+
+        .from {
+          font-size:0.8em;
+          margin-bottom: 4px;
+          color: darken(@msgColor, 35%)
+        }
+
+        .message {
+
+        }
+
+        &.mine {
+          background: @mineColor;
+          color: #424242;
+
+          .from {
+            color: darken(@mineColor, 35%)
+          }
+        }
+
+      }
+    }
+  }
+}

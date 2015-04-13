@@ -1,0 +1,11 @@
+[ignore]
+.*/node_modules/.*
+.*/dist/.*
+
+[include]
+/Volumes/Work/server/projects/xmpp-yt/src
+
+[libs]
+/Volumes/Work/server/projects/xmpp-yt/lib
+
+[options]
