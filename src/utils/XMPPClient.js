@@ -5,7 +5,7 @@ var XMPP = require('stanza.io'),
 
 var client;
 
-module.exports = {
+var XMPPClient = {
   init: function(opts: object){
     client = XMPP.createClient({
       jid: opts.jid,
@@ -24,13 +24,16 @@ module.exports = {
       });
     });
 
-    client.on('session:started', function(opts){
+    client.on('session:started', function(sessionData){
       AppDispatcher.dispatchServerAction({
         type: ActionTypes.CONNECTED,
         payload: {
-          jid: opts.full
+          jid: sessionData.full
         }
       });
+
+      XMPPClient.joinRoom(opts.room);
+
     });
 
     client.on('muc:*', function (type, msg) {
@@ -40,15 +43,6 @@ module.exports = {
         payload: msg
       });
     });
-
-    // client.on('muc:leave', function (msg) {
-    //   console.log('muc_leave', msg);
-
-    //   AppDispatcher.dispatchServerAction({
-    //     type: ActionTypes.MUC_LEAVE,
-    //     payload: msg
-    //   });
-    // });
 
     client.on('groupchat', function (msg) {
       AppDispatcher.dispatchServerAction({
@@ -63,9 +57,15 @@ module.exports = {
     client.connect();
   },
 
-  joinRoom: function(opts: object){
-    console.warn('joining room', opts);
-    client.joinRoom(opts.room, opts.nick);
+  joinRoom: function(room: string, nick: string){
+    console.warn('joining room', room, nick);
+    nick = nick || 'guest'+(Math.round(Math.random() * 10000));
+    client.joinRoom(room, nick);
+  },
+
+  changeNick: function(nick: string, room: string){
+    console.warn('change nick', nick, room);
+    client.changeNick(room, nick);
   },
 
   sendGroupMessage: function(message: string, room:string){
@@ -85,6 +85,8 @@ module.exports = {
 
   },
 
-}
+};
+
+module.exports = XMPPClient;
 
 

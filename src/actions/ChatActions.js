@@ -17,11 +17,7 @@ var ChatActions = {
       }
     });
 
-    ChatActions.joinRoom(XMPPOptions.room, nick);
-  },
-
-  joinRoom: function(room:string, nick:string){
-    XMPP.joinRoom({room: room, nick: nick});
+    XMPP.changeNick(nick, XMPPOptions.room);
   },
 
   sendMessage: function(msg: string){

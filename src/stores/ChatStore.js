@@ -75,7 +75,8 @@ AppDispatcher.register(function(action) {
 
       if(_messages.length &&
         (action.actionType === 'muc:available' ||
-        action.actionType === 'muc:unavailable')){
+        action.actionType === 'muc:unavailable') &&
+        payload.from.resource.indexOf('guest') !== 0){
         _messages.push(action);
         ChatStore.emitChange();
        }
@@ -93,7 +94,7 @@ AppDispatcher.register(function(action) {
       break;
 
     case ActionTypes.XMPP_DEBUG:
-      //console.log(action.payload.name, action.payload.data)
+      console.log(action.payload.name, action.payload.data)
       break;
 
     default:
