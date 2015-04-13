@@ -13,27 +13,36 @@ var verbForAction = {
 };
 
 export class ChatArea extends React.Component {
+  componentDidUpdate() {
+    this._scrollToBottom();
+  }
+
   render() {
     var messages = this.props.messages.map((msg) =>
       msg.messageType === 'chat' ?
-        <div className="entry">
+        <li className="entry">
           <div className={"message " + (msg.mine ? 'mine' : '')}>
             <div className="from">{msg.payload.from.resource}</div>
             <div className="message">{msg.payload.message}</div>
           </div>
-        </div> :
-        <div className="entry">
+        </li> :
+        <li className="entry">
           <div className="info">
             {msg.payload.from.resource} {verbForAction[msg.actionType]}
           </div>
-        </div>
+        </li>
     )
 
     return (
-      <div className="chat-area">
+      <ul ref="messageList" className="chat-area">
         { messages }
-      </div>
+      </ul>
     );
+  }
+
+  _scrollToBottom() {
+    var ul = this.refs.messageList.getDOMNode();
+    ul.scrollTop = ul.scrollHeight;
   }
 
 };
