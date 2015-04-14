@@ -14,6 +14,8 @@ var XMPPClient = {
       transports: ['websocket']
     });
 
+    window.client = client;
+
     client.on('*', function(name, data){
       AppDispatcher.dispatchServerAction({
         type: ActionTypes.XMPP_DEBUG,
@@ -65,6 +67,7 @@ var XMPPClient = {
 
   changeNick: function(nick: string, room: string){
     console.warn('change nick', nick, room);
+    client.leaveRoom(room);
     client.changeNick(room, nick);
   },
 
@@ -72,7 +75,7 @@ var XMPPClient = {
     client.sendMessage({
       body: message,
       type: 'groupchat',
-      to: room
+      to: room,
     });
 
     AppDispatcher.dispatchServerAction({
