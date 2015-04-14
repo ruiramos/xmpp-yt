@@ -67,8 +67,26 @@ var XMPPClient = {
 
   changeNick: function(nick: string, room: string){
     console.warn('change nick', nick, room);
-    client.leaveRoom(room);
     client.changeNick(room, nick);
+  },
+
+  changeNickWhenAlone: function(nick: string, room: string){
+    console.warn('change nick alone', nick, room);
+    client.leaveRoom(room);
+    client.joinRoom(room, nick);
+  },
+
+  getRoomRoster: function(room){
+    client.once('iq', function (msg) {
+      AppDispatcher.dispatchServerAction({
+        type: ActionTypes.ROOM_ROSTER_RECEIVED,
+        payload: {
+          roster: msg.discoItems.items
+        }
+      });
+    });
+
+    client.getDiscoItems(room, '', function(){});
   },
 
   sendGroupMessage: function(message: string, room:string){

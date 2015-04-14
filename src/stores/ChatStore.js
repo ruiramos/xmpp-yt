@@ -7,6 +7,7 @@ var EventEmitter = require('events').EventEmitter,
 
 var _nick,
     _messages = [],
+    _roomRoster = [],
     _jid;
 
 var ChatStore = Object.assign({}, EventEmitter.prototype, {
@@ -44,7 +45,8 @@ var ChatStore = Object.assign({}, EventEmitter.prototype, {
     return {
       nick: _nick,
       messages: _messages,
-      jid: _jid
+      jid: _jid,
+      roster: _roomRoster
     }
   }
 
@@ -71,18 +73,26 @@ AppDispatcher.register(function(action) {
       break;
 
     case ActionTypes.MUC_INFO:
-      var payload = action.payload;
+      var payload = action.payload,
+          resource = payload.from.resource;
 
-      if(_messages.length &&
-        (action.actionType === 'muc:available' ||
-        action.actionType === 'muc:unavailable') &&
-        payload.from.resource.indexOf('guest') !== 0){
-        _messages.push(action);
+      if(action.actionType === 'muc:available' || action.actionType === 'muc:unavailable'){
+
+        if(resource.indexOf('guest') !== 0 && _messages.length){
+          _messages.push(action);
+        }
+
+        if(action.actionType === 'muc:available'){
+          _roomRoster.push(resource);
+        } else {
+          var index = _roomRoster.indexOf(resource);
+          _roomRoster.splice(index, 1);
+        }
+
         ChatStore.emitChange();
        }
 
       break;
-
 
     case ActionTypes.GROUP_MESSAGE_RECEIVED:
       _messages.push({
@@ -93,8 +103,13 @@ AppDispatcher.register(function(action) {
       ChatStore.emitChange();
       break;
 
+    case ActionTypes.ROOM_ROSTER_RECEIVED:
+      _roomRoster = action.payload.roster;
+      ChatStore.emitChange();
+      break;
+
     case ActionTypes.XMPP_DEBUG:
-      //console.log(action.payload.name, action.payload.data)
+      console.log(action.payload.name, action.payload.data)
       break;
 
     default:

@@ -15,7 +15,7 @@ export class ChatComponent extends React.Component {
     return (
       <div id="chat-component">
         <ChatArea messages={this.props.messages} />
-        <ChatControls nick={this.props.nick} />
+        <ChatControls nick={this.props.nick} roster={this.props.roster} />
       </div>
     );
   }

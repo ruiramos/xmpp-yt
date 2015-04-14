@@ -13,6 +13,7 @@ module.exports = {
     GROUP_MESSAGE_SENT: null,
     GROUP_MESSAGE_RECEIVED: null,
     CONNECTED: null,
-    MUC_INFO: null
+    MUC_INFO: null,
+    ROOM_ROSTER_RECEIVED: null
   })
 };

@@ -47,7 +47,7 @@ export class ChatControls extends BaseComponent {
 
     if(val){
       if(!this.props.nick){
-        ChatActions.setNick(val);
+        ChatActions.setNick(val, this.props.roster);
       } else {
         ChatActions.sendMessage(val);
       }

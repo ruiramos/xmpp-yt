@@ -9,7 +9,7 @@ var ChatActions = {
     XMPP.init(opts);
   },
 
-  setNick: function(nick: string){
+  setNick: function(nick: string, roster: array){
     AppDispatcher.dispatchViewAction({
       type: ActionTypes.SET_NICK,
       payload: {
@@ -17,7 +17,11 @@ var ChatActions = {
       }
     });
 
-    XMPP.changeNick(nick, XMPPOptions.room);
+    if(roster.length > 1)
+      XMPP.changeNick(nick, XMPPOptions.room);
+    else
+      XMPP.changeNickWhenAlone(nick, XMPPOptions.room);
+
   },
 
   sendMessage: function(msg: string){
