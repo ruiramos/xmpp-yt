@@ -109,7 +109,7 @@ AppDispatcher.register(function(action) {
       break;
 
     case ActionTypes.XMPP_DEBUG:
-      console.log(action.payload.name, action.payload.data)
+      //console.log(action.payload.name, action.payload.data)
       break;
 
     default:

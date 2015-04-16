@@ -37,6 +37,10 @@ export class ChatControls extends BaseComponent {
     this.setState(nextProps.nick ? states.app : states.initial)
   }
 
+  componentDidMount(){
+    this.refs['message-input'].getDOMNode().focus();
+  }
+
   handleInputKeydown(e){
     if(e.which === 13) this.handleInputSubmit(e);
   }

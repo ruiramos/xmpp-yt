@@ -10,7 +10,7 @@
   li.entry {
     margin: 6px 0;
 
-    & > div { // .message or .info
+    & > div {
       display: inline-block;
       padding:4px 6px;
 
@@ -19,18 +19,18 @@
         color: white;
       }
 
-      &.message {
+      &.message-container {
         background: @msgColor;
         color:white;
 
         .from {
           font-size:0.8em;
-          margin-bottom: 4px;
+          margin-bottom: 2px;
           color: darken(@msgColor, 35%)
         }
 
         .message {
-
+          line-height: 1.65em;
         }
 
         &.mine {
@@ -43,6 +43,8 @@
         }
 
       }
+
     }
   }
+
 }
