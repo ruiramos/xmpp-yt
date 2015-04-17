@@ -47,11 +47,13 @@ var XMPPClient = {
     });
 
     client.on('groupchat', function (msg) {
+      console.log(msg)
       AppDispatcher.dispatchServerAction({
         type: ActionTypes.GROUP_MESSAGE_RECEIVED,
         payload: {
           from: msg.from,
-          message: msg.body
+          message: msg.body,
+          timestamp: new Date()
         }
       });
     });

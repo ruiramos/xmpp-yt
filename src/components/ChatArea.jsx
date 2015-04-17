@@ -3,7 +3,8 @@
   * @flow
  **/
 
-var React = require('react');
+var React = require('react'),
+    moment = require('moment');
 
 require('../less/chat-area.less');
 
@@ -39,10 +40,13 @@ export class ChatArea extends React.Component {
           // new recipient, or last message from the same one, gotta build the element!
           msgsStack.push(<div className="message">{msg.payload.message}</div>)
 
+          console.log(msg);
+
           messages.push(
             <li className="entry">
               <div className={"message-container " + (msg.mine ? 'mine' : '')}>
                 <div className="from">{msg.payload.from.resource}</div>
+                <span className="timestamp">{ moment(msg.payload.timestamp).format('HH:mm') }</span>
                 { msgsStack }
               </div>
             </li>
