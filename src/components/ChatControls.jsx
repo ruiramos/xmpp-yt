@@ -64,8 +64,7 @@ export class ChatControls extends BaseComponent {
   render() {
     return (
       <div className="chat-controls">
-        <p>{ this.state.instructions }</p>
-        <input ref="message-input" onKeyDown={this.handleInputKeydown} />
+        <input ref="message-input" onKeyDown={this.handleInputKeydown} placeholder={ this.state.instructions } tabIndex="1"/>
         <button onClick={this.handleInputSubmit}>{ this.state.buttonText }</button>
       </div>
     );

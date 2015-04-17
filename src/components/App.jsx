@@ -32,13 +32,8 @@ export class App extends React.Component {
   }
 
   render() {
-    var people = this.state.roster.map((item) => <li>{item}</li>);
-
     return (
       <div id="app">
-        <ul id="roster" style={{position: 'absolute', right: 0, width: '200px'}}>
-          { people }
-        </ul>
         <ChatComponent {...this.state} />
       </div>
     );
