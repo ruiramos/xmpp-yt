@@ -8,7 +8,6 @@ var React = require('react');
 // export for http://fb.me/react-devtools
 window.React = React;
 
-
 // var client = XMPP.createClient({
 //   jid: 'guest@ruiramos.com',
 //   password: '',

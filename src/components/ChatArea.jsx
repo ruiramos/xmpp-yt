@@ -4,7 +4,8 @@
  **/
 
 var React = require('react'),
-    moment = require('moment');
+    moment = require('moment'),
+    emojify = require('emojify.js');
 
 require('../less/chat-area.less');
 
@@ -14,8 +15,37 @@ var verbForAction = {
 };
 
 export class ChatArea extends React.Component {
+  constructor(){
+    super();
+
+    emojify.setConfig({
+      only_crawl_id    : 'chat-area-list',        // Use to restrict where emojify.js applies
+      img_dir          : '/static/images/emoji',  // Directory for emoji images
+      ignored_tags     : {                        // Ignore the following tags
+          'SCRIPT'  : 1,
+          'TEXTAREA': 1,
+          'A'       : 1,
+          'PRE'     : 1,
+          'CODE'    : 1
+      }
+    });
+  }
+
+  componentWillUpdate(nextProps){
+    var ul = this.refs.messageList.getDOMNode()
+    if(ul.scrollHeight === ul.scrollTop + ul.offsetHeight){
+      this.isScrollAtBottom = true;
+    } else {
+      this.isScrollAtBottom = false;
+    }
+  }
+
   componentDidUpdate() {
-    this._scrollToBottom();
+    if(this.isScrollAtBottom || this.props.messages[this.props.messages.length - 1].mine){
+     this._scrollToBottom();
+    }
+
+    emojify.run();
   }
 
   render() {
@@ -40,8 +70,6 @@ export class ChatArea extends React.Component {
           // new recipient, or last message from the same one, gotta build the element!
           msgsStack.push(<div className="message">{msg.payload.message}</div>)
 
-          console.log(msg);
-
           messages.push(
             <li className="entry">
               <div className={"message-container " + (msg.mine ? 'mine' : '')}>
@@ -57,8 +85,8 @@ export class ChatArea extends React.Component {
       } else {
         messages.push(
           <li className="entry">
-            <div className="info">
-              {msg.payload.from.resource} {verbForAction[msg.actionType]}
+            <div className="info-container">
+              <div className="info">{msg.payload.from.resource} {verbForAction[msg.actionType]}</div>
             </div>
           </li>
         );
@@ -67,7 +95,7 @@ export class ChatArea extends React.Component {
     };
 
     return (
-      <ul ref="messageList" className="chat-area">
+      <ul ref="messageList" className="chat-area" id="chat-area-list">
         { messages }
       </ul>
     );

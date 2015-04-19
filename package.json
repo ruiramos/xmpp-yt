@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "easysax": "^0.1.14",
+    "emojify.js": "^1.0.1",
     "flux": "^2.0.1",
     "keymirror": "^0.1.1",
     "mdi": "^1.0.8-beta",
@@ -17,6 +18,7 @@
     "node-xml": "^1.0.2",
     "object-assign": "^2.0.0",
     "react": "^0.13.1",
+    "require-sdk": "0.0.2",
     "stanza.io": "^7.1.6"
   },
   "devDependencies": {
