@@ -20,10 +20,9 @@ export class App extends React.Component {
 
     this.state = getStateFromStores();
 
-    // @todo set room on XMPPOptions based on url !!!
-    var room = window.location.pathname.split('/').pop() || 'world';
-
-    XMPPOptions.room = room;
+    // seting room on XMPPOptions based on url !!!
+    var room = this.props.room;
+    XMPPOptions.room = room + XMPPOptions.host;
 
     ChatActions.initClient(XMPPOptions);
   }
@@ -49,6 +48,5 @@ export class App extends React.Component {
   }
 };
 
-React.render(<App />, document.body);
 
 

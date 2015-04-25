@@ -17,6 +17,7 @@
     "moment": "^2.10.2",
     "node-xml": "^1.0.2",
     "object-assign": "^2.0.0",
+    "page": "^1.6.3",
     "react": "^0.13.1",
     "require-sdk": "0.0.2",
     "stanza.io": "^7.1.6"

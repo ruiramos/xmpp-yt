@@ -14,10 +14,6 @@ var XMPPClient = {
       transports: ['websocket']
     });
 
-    opts.room = opts.room + opts.host;
-
-    window.client = client;
-
     client.on('*', function(name, data){
       AppDispatcher.dispatchServerAction({
         type: ActionTypes.XMPP_DEBUG,
