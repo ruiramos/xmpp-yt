@@ -10,7 +10,6 @@ var routes = {};
 
 window.React = React;
 
-
 //--- Routes!
 
 routes.chat = function(){

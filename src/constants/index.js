@@ -14,6 +14,8 @@ module.exports = {
     GROUP_MESSAGE_RECEIVED: null,
     CONNECTED: null,
     MUC_INFO: null,
-    ROOM_ROSTER_RECEIVED: null
+    ROOM_ROSTER_RECEIVED: null,
+    SHOW_MISSED_MESSAGES: null,
+    HIDE_MISSED_MESSAGES: null,
   })
 };

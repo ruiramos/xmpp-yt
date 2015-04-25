@@ -45,7 +45,6 @@ var XMPPClient = {
     });
 
     client.on('groupchat', function (msg) {
-      console.log(msg)
       AppDispatcher.dispatchServerAction({
         type: ActionTypes.GROUP_MESSAGE_RECEIVED,
         payload: {
