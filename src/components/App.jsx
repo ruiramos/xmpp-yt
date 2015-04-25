@@ -21,7 +21,7 @@ export class App extends React.Component {
     this.state = getStateFromStores();
 
     // @todo set room on XMPPOptions based on url !!!
-    var room = window.location.pathname.split('/').pop();
+    var room = window.location.pathname.split('/').pop() || 'world';
 
     XMPPOptions.room = room;
 
