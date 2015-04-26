@@ -8,6 +8,10 @@ var React = require('react'),
 
 var ChatActions = require('../actions/ChatActions');
 
+// keeping it here for a quick my previous messages access
+var myOldMessages = [],
+    oldMessagePosition = 0;
+
 var states = {
   initial: {
     instructions: 'pick a handle',
@@ -43,6 +47,8 @@ export class ChatControls extends BaseComponent {
 
   handleInputKeydown(e){
     if(e.which === 13) this.handleInputSubmit(e);
+    else if(e.which === 38)this.handleUpKey(e);
+    else if(e.which === 40)this.handleDownKey(e);
   }
 
   handleInputSubmit(e){
@@ -54,17 +60,45 @@ export class ChatControls extends BaseComponent {
         ChatActions.setNick(val, this.props.roster);
       } else {
         ChatActions.sendMessage(val);
+        myOldMessages.push(val);
+        oldMessagePosition = myOldMessages.length; // end of the array
       }
 
       input.value = '';
     }
+  }
 
+  handleUpKey(e){
+    e.preventDefault();
+
+    oldMessagePosition = Math.max(oldMessagePosition - 1, 0);
+
+    if(myOldMessages[oldMessagePosition]){
+      this.setInputValueTo(myOldMessages[oldMessagePosition]);
+    }
+  }
+
+  handleDownKey(e){
+    e.preventDefault();
+
+    oldMessagePosition = Math.min(oldMessagePosition + 1, myOldMessages.length);
+
+    if(oldMessagePosition === myOldMessages.length){
+      this.setInputValueTo('');
+    } else {
+      this.setInputValueTo(myOldMessages[oldMessagePosition]);
+    }
+  }
+
+  setInputValueTo(val){
+    var input = this.refs['message-input'].getDOMNode();
+    input.value = val;
   }
 
   render() {
     return (
       <div className="chat-controls">
-        <input ref="message-input" onKeyDown={this.handleInputKeydown} placeholder={ this.state.instructions } tabIndex="1"/>
+        <input ref="message-input" onKeyDown={this.handleInputKeydown} placeholder={ this.state.instructions } tabIndex="0"/>
         <button onClick={this.handleInputSubmit}>{ this.state.buttonText }</button>
       </div>
     );

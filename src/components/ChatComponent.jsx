@@ -17,7 +17,10 @@ export class ChatComponent extends React.Component {
       <div id="chat-component">
         <RoomRoster roster={this.props.roster} />
         <ChatArea messages={this.props.messages} />
-        <ChatControls nick={this.props.nick} roster={this.props.roster} />
+        <ChatControls
+          nick={this.props.nick}
+          roster={this.props.roster}
+          />
       </div>
     );
   }
