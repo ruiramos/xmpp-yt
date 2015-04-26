@@ -3,10 +3,10 @@
   * @flow
  **/
 
-var React = require('react'),
-    RoomRoster = require('./RoomRoster').RoomRoster,
-    ChatArea = require('./ChatArea').ChatArea,
-    ChatControls = require('./ChatControls').ChatControls;
+var React         = require('react'),
+    RoomRoster    = require('./RoomRoster').RoomRoster,
+    ChatArea      = require('./ChatArea').ChatArea,
+    ChatControls  = require('./ChatControls').ChatControls;
 
 require('../less/chat-component.less');
 

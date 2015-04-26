@@ -5,7 +5,8 @@
 
 var React = require('react'),
     moment = require('moment'),
-    emojify = require('emojify.js');
+    emojify = require('emojify.js'),
+    MessageParser = require('../utils/MessageParser');
 
 require('../less/chat-area.less');
 
@@ -32,17 +33,13 @@ export class ChatArea extends React.Component {
   }
 
   componentWillUpdate(nextProps){
-    var ul = this.refs.messageList.getDOMNode()
-    if(ul.scrollHeight === ul.scrollTop + ul.offsetHeight){
-      this.isScrollAtBottom = true;
-    } else {
-      this.isScrollAtBottom = false;
-    }
+    var ul = this.refs.messageList.getDOMNode();
+    this.isScrollAtBottom = (ul.scrollHeight < ul.scrollTop + ul.offsetHeight + (ul.scrollHeight/15))
   }
 
   componentDidUpdate() {
     if(this.isScrollAtBottom || this.props.messages[this.props.messages.length - 1].mine){
-     this._scrollToBottom();
+     this.scrollToBottom();
     }
 
     emojify.run();
@@ -57,18 +54,19 @@ export class ChatArea extends React.Component {
 
       if(msg.messageType === 'chat'){
         // its a chat -- does it come from the same recipient?
+        var message = MessageParser.parse(msg.payload.message);
 
         if(i !== this.props.messages.length                                                  // if there is still a message
           && msg.payload.from.resource === this.props.messages[i].payload.from.resource      // and same recipient
           && this.props.messages[i].messageType === 'chat'){                                 // and both are chats
 
           // pushing into the stack for a later merge
-          msgsStack.push(<div className="message">{msg.payload.message}</div>)
+          msgsStack.push(<div className="message">{message}</div>)
           continue;
 
         } else {
           // new recipient, or last message from the same one, gotta build the element!
-          msgsStack.push(<div className="message">{msg.payload.message}</div>)
+          msgsStack.push(<div className="message">{message}</div>)
 
           messages.push(
             <li className="entry">
@@ -101,7 +99,7 @@ export class ChatArea extends React.Component {
     );
   }
 
-  _scrollToBottom() {
+  scrollToBottom() {
     var ul = this.refs.messageList.getDOMNode();
     ul.scrollTop = ul.scrollHeight;
   }
