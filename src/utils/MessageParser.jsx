@@ -38,7 +38,7 @@ var MessageParser = {
       )
     }
     else if((matches = message.match(url))){
-       var splitMsg = message.split(matches[0]);
+      var splitMsg = message.split(matches[0]);
 
       return (
         <span>
@@ -50,7 +50,7 @@ var MessageParser = {
       );
     }
     else if((matches = message.match(mention))){
-       var splitMsg = message.split(matches[0]);
+      var splitMsg = message.split(matches[0]);
       return (
         <span>
           <span>{splitMsg[0]}</span>
