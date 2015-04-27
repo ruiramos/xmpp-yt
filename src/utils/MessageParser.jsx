@@ -5,7 +5,7 @@
 **/
 
 // Regexps
-var url = /(https?:\/\/(www\.)?|(www\.))[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+var url = /((https?:\/\/(www\.)?|(www\.))[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))/
 var imgLink = /(?:http|www)(?:.*)\/((.*)(?:\.jpg|\.gif|\.png))(\?|$)/;
 var youtube = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
 var mention = /(@\w+\:?\s)/;
@@ -14,12 +14,8 @@ var MessageParser = {
   parse: function(message){
     var matches;
 
-    if((matches = message.match(url))){
-      return (
-        <span><a target="_blank" href={message}>{message}</a></span>
-      );
-    }
-    else if((matches = message.match(imgLink))){
+
+    if((matches = message.match(imgLink))){
       return (
         <span className="rich-message-container">
           <div><a href={message} target="_blank">{message}</a></div>
@@ -40,6 +36,18 @@ var MessageParser = {
           </div>
         </span>
       )
+    }
+    else if((matches = message.match(url))){
+       var splitMsg = message.split(matches[0]);
+
+      return (
+        <span>
+          <span>{splitMsg[0]}</span>
+          <span><a target="_blank" href={message}>{matches[0]}</a></span>
+          <span>{splitMsg[1]}</span>
+        </span>
+
+      );
     }
     else if((matches = message.match(mention))){
        var splitMsg = message.split(matches[0]);
