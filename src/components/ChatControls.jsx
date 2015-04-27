@@ -29,8 +29,7 @@ export class ChatControls extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = this.props.nick ? states.app : states.initial;
-    this.bindMethods('handleInputKeydown', 'handleInputSubmit');
-
+    this.bindMethods('handleInputKeyDown', 'handleInputKeyPress', 'handleInputSubmit');
   }
 
   /**
@@ -45,10 +44,16 @@ export class ChatControls extends BaseComponent {
     this.refs['message-input'].getDOMNode().focus();
   }
 
-  handleInputKeydown(e){
+  handleInputKeyDown(e){
     if(e.which === 13) this.handleInputSubmit(e);
-    else if(e.which === 38)this.handleUpKey(e);
-    else if(e.which === 40)this.handleDownKey(e);
+    else if(e.which === 38) this.handleUpKey(e);
+    else if(e.which === 40) this.handleDownKey(e);
+    else if(e.which === 9 /*tab*/) this.handleTabKeyPressed(e);
+  }
+
+  handleInputKeyPress(e){
+    if(this.props.nick && e.which === 64) this.handleUserMention(e);
+    else this.handleInputEnterChar(e);
   }
 
   handleInputSubmit(e){
@@ -90,15 +95,65 @@ export class ChatControls extends BaseComponent {
     }
   }
 
+  handleUserMention(){
+    console.log(this.props.roster);
+    this.setState({
+      mentioningUsers: this.props.roster,
+      suggestionIndex: 0
+    });
+  }
+
+  handleTabKeyPressed(e){
+    if(this.state.mentioningUsers){
+      e.preventDefault();
+      var mentionIndex = this.getInputValue().lastIndexOf('@');
+
+      var newInputContent =
+        this.getInputValue().substring(0, mentionIndex + 1) +
+        this.state.mentioningUsers[this.state.suggestionIndex];
+
+      if(mentionIndex === 0) newInputContent += ': ';
+      else newInputContent += ' '
+
+      this.setInputValueTo(newInputContent);
+
+      this.setState({
+        suggestionIndex: (this.state.suggestionIndex++) % this.state.mentioningUsers.length
+      });
+
+    }
+  }
+
+  handleInputEnterChar(e){
+    if(this.state.mentioningUsers){
+      //var key = e.key;
+      var inputVal = this.getInputValue();
+      var fragment = inputVal.substring(this.getInputValue().lastIndexOf('@') + 1) + e.key;
+      var usersFiltered = this.state.mentioningUsers.filter((nick) => nick.indexOf(fragment) === 0);
+
+      this.setState({mentioningUsers: usersFiltered.length ? usersFiltered : undefined});
+      console.log(fragment, usersFiltered);
+    }
+  }
+
   setInputValueTo(val){
     var input = this.refs['message-input'].getDOMNode();
     input.value = val;
   }
 
+  getInputValue(){
+    return this.refs['message-input'].getDOMNode().value;
+  }
+
   render() {
     return (
       <div className="chat-controls">
-        <input ref="message-input" onKeyDown={this.handleInputKeydown} placeholder={ this.state.instructions } tabIndex="0"/>
+        <input ref="message-input"
+           onKeyDown={this.handleInputKeyDown}
+           onKeyPress={this.handleInputKeyPress}
+           placeholder={this.state.instructions }
+           tabIndex="0" />
+
         <button onClick={this.handleInputSubmit}>{ this.state.buttonText }</button>
       </div>
     );

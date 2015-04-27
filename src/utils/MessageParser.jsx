@@ -8,7 +8,7 @@
 var url = /(https?:\/\/(www\.)?|(www\.))[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
 var imgLink = /(?:http|www)(?:.*)\/((.*)(?:\.jpg|\.gif|\.png))(\?|$)/;
 var youtube = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-
+var mention = /(@\w+\:?\s)/;
 
 var MessageParser = {
   parse: function(message){
@@ -38,6 +38,16 @@ var MessageParser = {
             <p className="embed-title">Youtube Video</p>
             <iframe className="video-embed" width="560" height="315" src={"https://www.youtube.com/embed/" + matches[2]} frameborder="0" allowfullscreen></iframe>
           </div>
+        </span>
+      )
+    }
+    else if((matches = message.match(mention))){
+       var splitMsg = message.split(matches[0]);
+      return (
+        <span>
+          <span>{splitMsg[0]}</span>
+          <span className="message-mention">{matches[0]}</span>
+          <span>{splitMsg[1]}</span>
         </span>
       )
     }
