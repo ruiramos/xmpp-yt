@@ -8,6 +8,7 @@ var React = require('react'),
     ChatComponent = require('./ChatComponent').ChatComponent,
 
     ChatStore = require('../stores/ChatStore'),
+    VideoStore = require('../stores/VideoStore'),
     MissedMessagesStore = require('../stores/MissedMessagesStore'),
 
     ChatActions = require('../actions/ChatActions'),
@@ -21,6 +22,7 @@ var baseTitle = '';
 var getStateFromStores = function(){
   return {
     chat: ChatStore.getAll(),
+    video: VideoStore.getAll(),
     missedMessages: MissedMessagesStore.getAll()
   }
 };
@@ -40,6 +42,7 @@ export class App extends React.Component {
 
   componentDidMount() {
     ChatStore.addChangeListener(this._onChange.bind(this));
+    VideoStore.addChangeListener(this._onChange.bind(this));
     MissedMessagesStore.addChangeListener(this._onChange.bind(this));
 
     WindowFocus.onWindowFocused(this.handleWindowFocused.bind(this));
@@ -50,6 +53,7 @@ export class App extends React.Component {
 
   componentWillUnmount() {
     ChatStore.removeChangeListener(this._onChange.bind(this));
+    VideoStore.removeChangeListener(this._onChange.bind(this));
     MissedMessagesStore.removeChangeListener(this._onChange.bind(this));
   }
 
@@ -73,6 +77,7 @@ export class App extends React.Component {
     return (
       <div id="app">
         <ChatComponent {...this.state.chat} />
+        <VideoOverlay {...this.state.video} />
       </div>
     );
   }

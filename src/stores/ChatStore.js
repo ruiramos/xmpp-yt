@@ -103,6 +103,15 @@ AppDispatcher.register(function(action) {
       ChatStore.emitChange();
       break;
 
+    case ActionTypes.GROUP_COMMAND_RECEIVED:
+      _messages.push({
+        actionType: 'action:play',
+        mine: action.payload.from.resource === _nick,
+        payload: action.payload
+      });
+      ChatStore.emitChange();
+      break;
+
     case ActionTypes.ROOM_ROSTER_RECEIVED:
       _roomRoster = action.payload.roster;
       ChatStore.emitChange();

@@ -12,7 +12,8 @@ require('../less/chat-area.less');
 
 var verbForAction = {
   'muc:available': 'joined',
-  'muc:unavailable': 'left'
+  'muc:unavailable': 'left',
+  'action:play': 'changed the video'
 };
 
 export class ChatArea extends React.Component {
@@ -81,6 +82,7 @@ export class ChatArea extends React.Component {
           msgsStack = [];
         }
       } else {
+        console.log(msg.actionType, verbForAction)
         messages.push(
           <li className="entry">
             <div className="info-container">

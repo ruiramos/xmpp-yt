@@ -16,7 +16,7 @@ export class VideoOverlay extends React.Component {
     var yt = requireSDK('https://youtube.com/iframe_api', 'YT')
     yt(function(err, youtube) {
       var player = new youtube.Player("youtube-player", {
-        videoId: 'GfsTsqsUt7I',
+        // videoId: 'GfsTsqsUt7I',
         height: '100%',
         width: '100%',
         events: {
@@ -41,9 +41,20 @@ export class VideoOverlay extends React.Component {
 
   }
 
+  componentWillReceiveProps(nextProps){
+    if(nextProps.videoId !== this.props.videoId){
+      this.state.player.loadVideoById(nextProps.videoId, 0, "hd720");
+    }
+  }
+
   render() {
+    var overlayStyle = {
+      display: this.props.videoId ? 'none' : 'block'
+    };
+
     return (
       <div className="video-overlay">
+        <div className="overlay" style={overlayStyle}></div>
         <div id="youtube-player"></div>
       </div>
     );

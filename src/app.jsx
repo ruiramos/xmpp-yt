@@ -16,7 +16,7 @@ if(document.location.host.indexOf('localhost') === 0){
   var js = document.createElement("script");
   js.type = "text/javascript";
   js.src = "http://localhost:8080/webpack-dev-server.js";
-  document.body.appendChild(js);
+  document.head.appendChild(js);
 }
 
 //--- Routes!

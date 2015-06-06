@@ -45,14 +45,35 @@ var XMPPClient = {
     });
 
     client.on('groupchat', function (msg) {
-      AppDispatcher.dispatchServerAction({
-        type: ActionTypes.GROUP_MESSAGE_RECEIVED,
-        payload: {
-          from: msg.from,
-          message: msg.body,
-          timestamp: new Date()
-        }
-      });
+      if(msg.body.indexOf('/play') === 0){
+        var id = msg.body.split('/play')[1].trim();
+
+        AppDispatcher.dispatchServerAction({
+          type: ActionTypes.CHANGE_VIDEOID,
+          payload: {
+            videoId: id,
+          }
+        });
+
+        AppDispatcher.dispatchServerAction({
+          type: ActionTypes.GROUP_COMMAND_RECEIVED,
+          payload: {
+            from: msg.from,
+            message: msg.body,
+            timestamp: new Date()
+          }
+        });
+
+      } else {
+        AppDispatcher.dispatchServerAction({
+          type: ActionTypes.GROUP_MESSAGE_RECEIVED,
+          payload: {
+            from: msg.from,
+            message: msg.body,
+            timestamp: new Date()
+          }
+        });
+      }
     });
 
     client.connect();
