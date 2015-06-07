@@ -1,9 +1,15 @@
 /* @flow */
 var XMPP = require('stanza.io'),
     ActionTypes = require('../constants').ActionTypes,
-    AppDispatcher = require('../dispatcher/AppDispatcher');
+    AppDispatcher = require('../dispatcher/AppDispatcher'),
+    messageCommands = require('./messageCommands');
 
 var client;
+
+function _handleCommand(msg){
+  var cmd = msg.match(/^\/(\w+)\s(.*)/);
+  messageCommands[cmd[1]+'Handler'](cmd[2]);
+}
 
 var XMPPClient = {
   init: function(opts: object){
@@ -45,15 +51,9 @@ var XMPPClient = {
     });
 
     client.on('groupchat', function (msg) {
-      if(msg.body.indexOf('/play') === 0){
-        var id = msg.body.split('/play')[1].trim();
+      if(msg.body.match(/^\/(\w+)\s(.*)/)){
 
-        AppDispatcher.dispatchServerAction({
-          type: ActionTypes.CHANGE_VIDEOID,
-          payload: {
-            videoId: id,
-          }
-        });
+        _handleCommand(msg.body);
 
         AppDispatcher.dispatchServerAction({
           type: ActionTypes.GROUP_COMMAND_RECEIVED,

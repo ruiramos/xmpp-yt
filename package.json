@@ -20,7 +20,8 @@
     "page": "^1.6.3",
     "react": "^0.13.1",
     "require-sdk": "0.0.2",
-    "stanza.io": "^7.1.6"
+    "stanza.io": "^7.1.6",
+    "superagent": "^1.2.0"
   },
   "devDependencies": {
     "babel-core": "^5.0.12",
