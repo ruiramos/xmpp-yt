@@ -13,7 +13,7 @@ var Api = {
         part: 'snippet',
         q: q,
         type: 'video',
-        maxResults: 8,
+        maxResults: 10,
         videoDefinition: 'high'
       })
       .end(function(err, response){

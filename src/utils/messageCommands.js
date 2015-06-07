@@ -4,7 +4,7 @@ var ActionTypes = require('../constants').ActionTypes,
     Api = require('./Api');
 
 function _isVideoId(str){
-  return str.match(/[\w\-]+/ ) && str.length === 11;
+  return str && str.match(/[\w\-]+/ ) && str.length === 11;
 }
 
 module.exports = {
@@ -17,8 +17,19 @@ module.exports = {
           }
         });
     } else {
-      Api.searchYoutubeFor(vid, function(results){
-        var randomVid = results[Math.floor(Math.random() * results.length)];
+      var query,
+          random = false;
+
+      if(vid && vid.indexOf('#random') > -1){
+        query = vid.split('#random').join('').trim();
+        random = true;
+      } else {
+        query = vid;
+      }
+
+      Api.searchYoutubeFor(query, function(results){
+        var pos = random ? Math.floor(Math.random() * results.length) : 0;
+        var randomVid = results[pos];
         AppDispatcher.dispatchServerAction({
           type: ActionTypes.CHANGE_VIDEOID,
           payload: {

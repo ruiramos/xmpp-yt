@@ -13,7 +13,8 @@ require('../less/chat-area.less');
 var verbForAction = {
   'muc:available': 'joined',
   'muc:unavailable': 'left',
-  'action:play': 'changed the video'
+  'action:play': 'changed the video',
+  'action:stop': 'stopped the video',
 };
 
 export class ChatArea extends React.Component {

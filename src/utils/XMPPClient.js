@@ -7,8 +7,9 @@ var XMPP = require('stanza.io'),
 var client;
 
 function _handleCommand(msg){
-  var cmd = msg.match(/^\/(\w+)\s(.*)/);
-  messageCommands[cmd[1]+'Handler'](cmd[2]);
+  var cmd = msg.match(/^\/(\w+)(?:\s(.*))?/);
+  if(messageCommands[cmd[1]+'Handler'])
+    messageCommands[cmd[1]+'Handler'](cmd[2]);
 }
 
 var XMPPClient = {
@@ -51,13 +52,16 @@ var XMPPClient = {
     });
 
     client.on('groupchat', function (msg) {
-      if(msg.body.match(/^\/(\w+)\s(.*)/)){
+      var cmd;
+      if(cmd = msg.body.match(/^\/(\w+)(?:\s(.*))?/)){
 
         _handleCommand(msg.body);
+        console.log(cmd)
 
         AppDispatcher.dispatchServerAction({
           type: ActionTypes.GROUP_COMMAND_RECEIVED,
           payload: {
+            actionType: 'action:' + cmd[1],
             from: msg.from,
             message: msg.body,
             timestamp: new Date()

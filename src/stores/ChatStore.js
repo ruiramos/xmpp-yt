@@ -105,7 +105,7 @@ AppDispatcher.register(function(action) {
 
     case ActionTypes.GROUP_COMMAND_RECEIVED:
       _messages.push({
-        actionType: 'action:play',
+        actionType: action.payload.actionType,
         mine: action.payload.from.resource === _nick,
         payload: action.payload
       });
