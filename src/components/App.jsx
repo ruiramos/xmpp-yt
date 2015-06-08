@@ -15,7 +15,9 @@ var React = require('react'),
     MissedMessagesActions = require('../actions/MissedMessagesActions'),
 
     XMPPOptions = require('../constants/xmpp'),
-    WindowFocus = require('../utils/WindowFocus');
+    WindowFocus = require('../utils/WindowFocus'),
+
+    cx = require('classnames');
 
 var baseTitle = '';
 
@@ -74,8 +76,12 @@ export class App extends React.Component {
   }
 
   render() {
+    var appClasses = cx({
+      'video-playing': this.state.video.videoId
+    });
+
     return (
-      <div id="app">
+      <div id="app" className={appClasses}>
         <ChatComponent {...this.state.chat} />
         <VideoOverlay {...this.state.video} />
       </div>

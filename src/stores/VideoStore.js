@@ -5,7 +5,8 @@ var EventEmitter = require('events').EventEmitter,
     ActionTypes = ChatConstants.ActionTypes,
     CHANGE_EVENT = 'change';
 
-var _videoId;
+var _videoId,
+    _running = false;
 
 var VideoStore = Object.assign({}, EventEmitter.prototype, {
   emitChange: function() {
@@ -33,6 +34,7 @@ var VideoStore = Object.assign({}, EventEmitter.prototype, {
   getAll: function(){
     return {
       videoId: _videoId,
+      running: _running
     }
   }
 
@@ -41,9 +43,19 @@ var VideoStore = Object.assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(action) {
 
   switch(action.type) {
-
     case ActionTypes.CHANGE_VIDEOID:
       _videoId = action.payload.videoId;
+      _running = true;
+      VideoStore.emitChange();
+      break;
+
+    case ActionTypes.STOP_VIDEO:
+      _running = false;
+      VideoStore.emitChange();
+      break;
+
+    case ActionTypes.RESUME_VIDEO:
+      _running = true;
       VideoStore.emitChange();
       break;
 

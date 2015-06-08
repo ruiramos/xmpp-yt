@@ -9,6 +9,7 @@
   "author": "Rui Ramos <ruiramos@gmail.com> (http://ruiramos.com/)",
   "license": "MIT",
   "dependencies": {
+    "classnames": "^2.1.2",
     "easysax": "^0.1.14",
     "emojify.js": "^1.0.1",
     "flux": "^2.0.1",

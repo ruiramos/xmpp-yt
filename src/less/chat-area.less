@@ -13,49 +13,59 @@
 
     & > div {
       display: inline-block;
-
-      &.info-container {
-        .info {
-          background: orange;
-          color: white;
-          padding:0px 4px;
-          font-size:0.95em;
-          line-height: 21px;
-        }
-      }
-
-      &.message-container {
-        .from {
-          display: inline-block;
-          background: @msgColor;
-          color: darken(@msgColor, 35%);
-          padding:0px 4px;
-          font-size:0.95em;
-          line-height: 21px;
-        }
-
-        .timestamp {
-          font-size:0.8em;
-          color: #bbb;
-          margin-left: 2px;
-        }
-
-        .message {
-          line-height: 1.5em;
-          margin-left: 4px;
-          color: #eee;
-        }
-
-        &.mine {
-          .from {
-            background: @mineColor;
-            color: darken(@mineColor, 35%)
-          }
-        }
-
-      }
-
     }
+  }
+
+  .info-container {
+    .info {
+      background: orange;
+      color: white;
+      padding:0px 4px;
+      font-size:0.95em;
+      line-height: 21px;
+    }
+
+    &.error .info {
+      background: darkred;
+    }
+  }
+
+  .message-container {
+    .from {
+      display: inline-block;
+      background: @msgColor;
+      color: darken(@msgColor, 35%);
+      padding:0px 4px;
+      font-size:0.95em;
+      line-height: 21px;
+    }
+
+    .timestamp {
+      font-size:0.8em;
+      color: #bbb;
+      margin-left: 2px;
+    }
+
+    .message {
+      line-height: 1.5em;
+      margin-left: 4px;
+      color: #111;
+    }
+
+    &.mine {
+      .from {
+        background: @mineColor;
+        color: darken(@mineColor, 35%)
+      }
+    }
+
+  }
+}
+
+.video-playing .chat-area {
+  .message-container .message {
+    color: #eee;
+    text-shadow: 0px 0px 10px rgba(0,0,0,0.3), 1px 1px 1px rgba(0,0,0,0.5);
   }
 }
 

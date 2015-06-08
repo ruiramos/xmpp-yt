@@ -15,6 +15,7 @@ var verbForAction = {
   'muc:unavailable': 'left',
   'action:play': 'changed the video',
   'action:stop': 'stopped the video',
+  'action:resume': 'resumed the video'
 };
 
 export class ChatArea extends React.Component {
@@ -58,9 +59,9 @@ export class ChatArea extends React.Component {
         // its a chat -- does it come from the same recipient?
         var message = MessageParser.parse(msg.payload.message);
 
-        if(i !== this.props.messages.length                                                  // if there is still a message
-          && msg.payload.from.resource === this.props.messages[i].payload.from.resource      // and same recipient
-          && this.props.messages[i].messageType === 'chat'){                                 // and both are chats
+        if(i !== this.props.messages.length
+          && this.props.messages[i].messageType === 'chat'            // and both are chats
+          && msg.payload.from.resource === this.props.messages[i].payload.from.resource){      // and same recipient
 
           // pushing into the stack for a later merge
           msgsStack.push(<div className="message">{message}</div>)
@@ -82,15 +83,26 @@ export class ChatArea extends React.Component {
 
           msgsStack = [];
         }
-      } else {
-        console.log(msg.actionType, verbForAction)
-        messages.push(
-          <li className="entry">
-            <div className="info-container">
-              <div className="info">{msg.payload.from.resource} {verbForAction[msg.actionType]}</div>
-            </div>
-          </li>
-        );
+      } else { // action!
+
+        if(!msg.error){
+          messages.push(
+            <li className="entry">
+              <div className="info-container">
+                <div className="info">{msg.payload.from.resource} {verbForAction[msg.actionType]}</div>
+              </div>
+            </li>
+          );
+        } else {
+          messages.push(
+            <li className="entry">
+              <div className="info-container error">
+                <div className="info">Problem: {msg.error}</div>
+              </div>
+            </li>
+          );
+
+        }
         msgsStack = [];
       }
     };

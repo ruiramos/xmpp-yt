@@ -20,7 +20,7 @@ export class VideoOverlay extends React.Component {
         height: '100%',
         width: '100%',
         events: {
-          'onReady': that.playerReady,
+          'onReady': that.playerReady.bind(that),
           'onStateChange': that.handlePlayerStateChange
         }
       });
@@ -34,7 +34,8 @@ export class VideoOverlay extends React.Component {
   }
 
   playerReady(){
-
+    if(this.props.videoId)
+      this.state.player.loadVideoById(this.props.videoId, 0, "hd720");
   }
 
   handlePlayerStateChange(){
@@ -42,8 +43,17 @@ export class VideoOverlay extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.videoId !== this.props.videoId){
+    if(this.state && this.state.player && nextProps.videoId !== this.props.videoId){
       this.state.player.loadVideoById(nextProps.videoId, 0, "hd720");
+    }
+  }
+
+  componentWillUpdate(nextProps, nextState){
+    if(this.state && this.state.player && this.state.player.getPlayerState){
+      if(!nextProps.running && this.state.player.getPlayerState() === 1){
+        this.state.player.pauseVideo();
+      } else if(nextProps.running && this.state.player.getPlayerState() === 2)
+        this.state.player.playVideo();
     }
   }
 

@@ -6,10 +6,20 @@ var XMPP = require('stanza.io'),
 
 var client;
 
+var actionRegexp = /^\/(\w+)(?:\s(.*))?/;
+
 function _handleCommand(msg){
-  var cmd = msg.match(/^\/(\w+)(?:\s(.*))?/);
+  var cmd = msg.match(actionRegexp);
   if(messageCommands[cmd[1]+'Handler'])
     messageCommands[cmd[1]+'Handler'](cmd[2]);
+}
+
+function _handleCommandSend(msg, fn){
+  var cmd = msg.match(actionRegexp);
+  if(messageCommands[cmd[1]+'SendHandler'])
+    messageCommands[cmd[1]+'SendHandler'](cmd[2], fn);
+  else
+    fn(msg);
 }
 
 var XMPPClient = {
@@ -53,10 +63,9 @@ var XMPPClient = {
 
     client.on('groupchat', function (msg) {
       var cmd;
-      if(cmd = msg.body.match(/^\/(\w+)(?:\s(.*))?/)){
+      if(cmd = msg.body.match(actionRegexp)){
 
         _handleCommand(msg.body);
-        console.log(cmd)
 
         AppDispatcher.dispatchServerAction({
           type: ActionTypes.GROUP_COMMAND_RECEIVED,
@@ -114,19 +123,26 @@ var XMPPClient = {
   },
 
   sendGroupMessage: function(message: string, room:string){
-    client.sendMessage({
-      body: message,
-      type: 'groupchat',
-      to: room,
-    });
+    if(message.match(actionRegexp)){
+      _handleCommandSend(message, function(m){ _sendMessage(m); });
+    } else {
+      _sendMessage(message)
+    }
 
-    AppDispatcher.dispatchServerAction({
-      type: ActionTypes.GROUP_MESSAGE_SENT,
-      payload: {
-        message: message,
-      }
-    });
+    function _sendMessage(m){
+      client.sendMessage({
+        body: m,
+        type: 'groupchat',
+        to: room,
+      });
 
+      AppDispatcher.dispatchServerAction({
+        type: ActionTypes.GROUP_MESSAGE_SENT,
+        payload: {
+          message: m,
+        }
+      });
+    }
 
   },
 

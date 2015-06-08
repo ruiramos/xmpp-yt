@@ -112,6 +112,15 @@ AppDispatcher.register(function(action) {
       ChatStore.emitChange();
       break;
 
+    case ActionTypes.VIDEO_NOT_FOUND:
+      _messages.push({
+        error: 'video not found, try again!',
+        actionType: action.payload.actionType,
+        payload: action.payload
+      });
+      ChatStore.emitChange();
+      break;
+
     case ActionTypes.ROOM_ROSTER_RECEIVED:
       _roomRoster = action.payload.roster;
       ChatStore.emitChange();

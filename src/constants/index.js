@@ -18,6 +18,9 @@ module.exports = {
     ROOM_ROSTER_RECEIVED: null,
     SHOW_MISSED_MESSAGES: null,
     HIDE_MISSED_MESSAGES: null,
-    CHANGE_VIDEOID: null
+    CHANGE_VIDEOID: null,
+    VIDEO_NOT_FOUND: null,
+    STOP_VIDEO: null,
+    RESUME_VIDEO: null,
   })
 };
