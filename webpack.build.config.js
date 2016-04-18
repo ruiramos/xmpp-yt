@@ -10,6 +10,7 @@ module.exports = {
   module: {
     loaders: [
       {test: /\.less$/, loader: 'style!css!less'},
+      {test: /\.json$/, loader: 'json'},
       {test: /\.jsx$/, loaders: ['babel', 'flowcheck'], exclude: /node_modules/},
       {test: /\.js$/, loaders: ['babel'], exclude: /node_modules/}
     ]

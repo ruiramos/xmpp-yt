@@ -13,6 +13,7 @@
     "easysax": "^0.1.14",
     "emojify.js": "^1.0.1",
     "flux": "^2.0.1",
+    "json-loader": "^0.5.4",
     "keymirror": "^0.1.1",
     "mdi": "^1.0.8-beta",
     "moment": "^2.10.2",
